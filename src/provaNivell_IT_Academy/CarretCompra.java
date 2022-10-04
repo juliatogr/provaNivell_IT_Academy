@@ -17,12 +17,18 @@ public class CarretCompra {
 	public String getUsuari() {
 		return usuari;
 	}
-
+	
+	public ArrayList<Producte> getProductes() {
+		return productes;
+	}
+	
 	public void setUsuari(String usuari) {
 		this.usuari = usuari;
 	}
 
+	@Deprecated
 	public void calcularPreuTotal() {
+		System.out.println("Mètode deprecat");
 		preuTotal = 0;
 		for (Producte p: productes) {
 			preuTotal += p.getPreu();
@@ -30,8 +36,11 @@ public class CarretCompra {
 		System.out.println("El preu total del carret és de " + preuTotal);
 	}
 	
-	public void mostrarProductes() {
+	public void mostrarProductes() throws NoProductes {
 		
+		if (this.productes.size() == 0) {
+			throw new NoProductes();
+		}
 		System.out.println("Productes: ");
 		for (Producte p: productes) {
 			System.out.println(p);
@@ -118,8 +127,6 @@ public class CarretCompra {
 		txt += "\n";
 		return  txt;
 	}
-	
-	
 	
 	
 }

@@ -1,8 +1,14 @@
 package provaNivell_IT_Academy;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 /*
 Crea una aplicació que serveixi per gestionar carrets de la compra dels usuaris d'un e-comerce.
 
@@ -17,6 +23,13 @@ L'aplicació ha de ser capaç de:
 1. Afegir productes al carret de cada usuari. Si el producte ja existeix al carret, se li suma la quantitat.
 2. Calcular l'import total de tots els productes d'un carret
 3. Mostrar el número de productes d'una marca en concret en un carret (Amb lambda)
+
+Mostra els productes d’un carret concret. Si no té productes llença l'excepció personalitzada "No hi ha productes"
+
+Crea un mètode obsolet en alguna clase. 
+
+Fer una persistencia amb csv
+
 */
 
 public class MainClass {
@@ -24,7 +37,7 @@ public class MainClass {
 	private static CarretCompra carretActual = null;
 	private static ArrayList<CarretCompra> carrets;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		carrets = new ArrayList<CarretCompra>();
 		boolean exit = false;
@@ -75,6 +88,14 @@ public class MainClass {
 						break;
 				}
 			}
+			
+			try {
+				updateCSV(carrets);
+			}
+			catch (IOException e){
+				e.getMessage();
+			}
+
 		}
 	}
 	
@@ -135,6 +156,7 @@ public class MainClass {
 		carretActual.afegirProducte();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void calcularImportCarret() {
 		System.out.println("Calculant l'import del carret de l'usuari " + carretActual.getUsuari());
 		
@@ -142,9 +164,15 @@ public class MainClass {
 	}
 	
 	public static void mostrarProductesCarret() {
+		
 		System.out.println("Mostrant els productes del carret de l'usuari " + carretActual.getUsuari());
 		
-		carretActual.mostrarProductes();
+		try {
+			carretActual.mostrarProductes();
+		}
+		catch (NoProductes e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	
@@ -220,5 +248,33 @@ public class MainClass {
 			}
 		}
 		return carret;
+	}
+	
+	
+	public static void updateCSV(ArrayList<CarretCompra> carrets) throws IOException {
+
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new File("carrets.csv"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        StringBuilder builder = new StringBuilder();
+        String columnNamesList = "nom, marca, preu, quantitat";
+        // No need give the headers Like: id, Name on builder.append
+        builder.append(columnNamesList + "\n");
+        
+	    for (CarretCompra c : carrets) {
+	    	builder.append("Productes del carret de l'usuari " + c.getUsuari() +"\n");
+	    	ArrayList<Producte> prods = c.getProductes();
+		    for (Producte p : prods) {
+		    	builder.append(p.getNom() + "," + p.getMarca() + "," + p.getPreu() + "," + p.getQuantitat()+"\n");
+	    	}
+    	}
+  
+        pw.write(builder.toString());
+        pw.close();
+        System.out.println("CSV updated");
+	    
 	}
 }
