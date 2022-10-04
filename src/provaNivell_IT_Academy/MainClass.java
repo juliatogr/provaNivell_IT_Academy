@@ -3,25 +3,29 @@ package provaNivell_IT_Academy;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+Crea una aplicació que serveixi per gestionar carrets de la compra dels usuaris d'un e-comerce.
+
+Tenim productes, dels quals volem saber:
+    - nom
+    - marca
+    - preu
+    - quantitat de productes d'aquell tipus que compra l'usuari en el seu carret (no és l'Stock)
+
+L'aplicació ha de ser capaç de:
+		
+1. Afegir productes al carret de cada usuari. Si el producte ja existeix al carret, se li suma la quantitat.
+2. Calcular l'import total de tots els productes d'un carret
+3. Mostrar el número de productes d'una marca en concret en un carret (Amb lambda)
+*/
+
 public class MainClass {
 
 	private static CarretCompra carretActual = null;
 	private static ArrayList<CarretCompra> carrets;
+	
 	public static void main(String[] args) {
 
-		// crea una aplicació que serveixi per gestiónar carrets de la compra
-		
-		// dels usuaris de un e-comerce
-		
-		// - Producto: nom, marca, precio cantidad de productos de ese tipo que compra el usuario en su carrito( no es stock)
-		
-		// 1. l'aplicació ha de ser capaç d'afegir productes al carret de cada usuari
-		
-		//		Si el producte ja existeix al carret, se li suma la quantitat
-		// 2. Calcular l'import total de tots els productes d'un carret
-		// 3. Mostrar el número de productes d'una marca en concret en un carret (Con lambda)
-		
-		
 		carrets = new ArrayList<CarretCompra>();
 		boolean exit = false;
 		byte opt;
@@ -71,9 +75,7 @@ public class MainClass {
 						break;
 				}
 			}
-
 		}
-
 	}
 	
 	
@@ -94,7 +96,6 @@ public class MainClass {
 			System.out.println("    6. Canviar de carret.");
 			System.out.println("    0. Sortir.");
 			
-			//todo try
 			opt = sc.nextByte();
 			
 			if (opt < 0 || opt > 6) {
@@ -117,7 +118,6 @@ public class MainClass {
 			System.out.println("    1. Afegir un carret.");
 			System.out.println("    0. Sortir.");
 			
-			//todo try
 			opt = sc.nextByte();
 			
 			if (opt < 0 || opt > 1) {
@@ -132,10 +132,7 @@ public class MainClass {
 	public static void afegirProducteCarret() {
 		System.out.println("Afegint un producte al carret de l'usuari " + carretActual.getUsuari());
 		
-		
 		carretActual.afegirProducte();
-		
-		
 	}
 	
 	public static void calcularImportCarret() {
@@ -156,13 +153,12 @@ public class MainClass {
 		
 		System.out.println("Introdueix la marca: ");
 		String marca = sc.nextLine();
-		System.out.println("Mostrant els productes de la marca " + marca + " del carret de l'usuari " + carretActual.getUsuari());
-		
+
 		carretActual.mostrarNumProductesMarca(marca);
 	}
 	
 	public static void afegirCarret() {
-		System.out.println("Afegint un carret ");
+		System.out.println("Afegint un carret.");
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -205,9 +201,6 @@ public class MainClass {
 				}
 			}
 		}
-
-
-		
 	}
 	
 	public static void mostrarCarrets() {
